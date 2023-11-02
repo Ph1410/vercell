@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogo de Adivinhar Número</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #message {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Jogo de Adivinhar Número</h2>
+        <p>Tente adivinhar um número entre 0 e 50 com 10 tentativas.</p>
+        <label for="guess">Tentativa:</label>
+        <input type="number" id="guess" min="0" max="50" required>
+        <button id="submit">Enviar Tentativa</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const randomNumber = Math.floor(Math.random() * 51); // Gera um número aleatório de 0 a 50
+            const maxTries = 10;
+            let attempts = 0;
+
+            const message = document.getElementById('message');
+            const submitButton = document.getElementById('submit');
+            const guessInput = document.getElementById('guess');
+
+            submitButton.addEventListener('click', function() {
+                const guess = parseInt(guessInput.value);
+
+                if (isNaN(guess) || guess < 0 || guess > 50) {
+                    message.textContent = 'Por favor, insira um número válido de 0 a 50.';
+                } else {
+                    attempts++;
+                    if (guess === randomNumber) {
+                        message.textContent = `Parabéns! Você adivinhou o número ${randomNumber} em ${attempts} tentativa(s).`;
+                        submitButton.disabled = true;
+                    } else if (attempts === maxTries) {
+                        message.textContent = `Você excedeu o número máximo de tentativas. O número era ${randomNumber}.`;
+                        submitButton.disabled = true;
+                    } else if (guess < randomNumber) {
+                        message.textContent = 'Tente um número maior.';
+                    } else {
+                        message.textContent = 'Tente um número menor.';
+                    }
+                }
+                guessInput.value = '';
+            });
+        });
+    </script>
+</body>
+</html>
